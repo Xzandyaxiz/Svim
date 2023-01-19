@@ -1,0 +1,5 @@
+keywords: # If you want custom syntax highlighting, provide samples here with each respective ANSI escape code
+    import:
+        \033[36m
+    as:
+        \033[36m
