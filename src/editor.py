@@ -27,7 +27,7 @@ def update_cursor(message:str = None):
 
     for row in rows:
         print(f'\033[36m~\033[0m  {row}')
-        
+
     print(message) if message else 0
 
 def move_cursor_row(amount):
@@ -37,7 +37,6 @@ def move_cursor_row(amount):
         return
         
     try:
-
         if cursor[1] > len(rows[cursor[0] + amount]):
             cursor = (cursor[0] + amount, 0)
             return update_cursor()
