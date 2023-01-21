@@ -18,25 +18,36 @@ def update_cursor(cursor: tuple, rows: list, text: str) -> None:
     except:
         pass
 
-def move_cursor_row(amount, cursor: tuple, rows: list):
+def move_cursor_row(amount):
     global cursor
 
     if cursor[0] + amount < 0:
         return
+        
     try:
-
         if amount == -1:
             if cursor[1] > len(rows[cursor[0] - 1]):
-                cursor = (cursor[0] + (amount +1), len(rows[cursor[0] - 1]) -1)
+                cursor = (cursor[0] - 1 if cursor[0] - 1 >= 0 else 0, 0)
+                return update_cursor()
+
+            elif not rows[cursor[0]-1].strip():
+                cursor = (cursor[0] - 1, 0)
+                return update_cursor()
 
         if amount == 1:
             if cursor[1] > len(rows[cursor[0] + 1]):
-                cursor = (cursor[0] + (amount - 1), len(rows[cursor[0] + 1]) -1)
+                cursor = (cursor[0] + 1, 0)
+                return update_cursor()
+
+            elif not rows[cursor[0]+1].strip():
+                cursor = (cursor[0] + 1, 0)
+                return update_cursor()
+
     except IndexError:
         return
 
     cursor = (cursor[0] + amount, cursor[1])
-    update_cursor(cursor, rows)
+    return update_cursor()
 
 
 def move_cursor_col(amount: int, cursor: tuple):

@@ -14,18 +14,20 @@ def update_cursor(message:str = None):
     os.system('clear')
 
     text_index = get_cursor_position()
-
     char_arr = [char for char in text]
-    char_arr[text_index] = "\033[47m" + char_arr[text_index] + "\033[0m"
 
+    if text_index >= len(char_arr)-1:
+        return
+
+    if char_arr[text_index] == '\n':
+        char_arr.insert(text_index, "\u258e")
+
+    char_arr[text_index] = "\033[47m" + char_arr[text_index] + "\033[0m"
     rows = ''.join(char_arr).split('\n')
 
     for row in rows:
-
-        print(f'\033[36m-\033[0m {row}')
-
-    print(cursor)
-
+        print(f'\033[36m~\033[0m  {row}')
+        
     print(message) if message else 0
 
 def move_cursor_row(amount):
@@ -33,21 +35,22 @@ def move_cursor_row(amount):
 
     if cursor[0] + amount < 0:
         return
+        
     try:
 
-        if amount == -1:
-            if cursor[1] > len(rows[cursor[0] - 1]):
-                cursor = (cursor[0] - 1 if cursor[0] - 1 >= 0 else 0, 0)
+        if cursor[1] > len(rows[cursor[0] + amount]):
+            cursor = (cursor[0] + amount, 0)
+            return update_cursor()
 
-        if amount == 1:
-            if cursor[1] > len(rows[cursor[0] + 1]):
-                cursor = (cursor[0] + 1, 0)
+        elif not rows[cursor[0]+amount].strip():
+            cursor = (cursor[0] + amount, 0)
+            return update_cursor()
 
     except IndexError:
         return
 
     cursor = (cursor[0] + amount, cursor[1])
-    update_cursor()
+    return update_cursor()
 
 def move_cursor_col(amount):
     global cursor
@@ -56,12 +59,10 @@ def move_cursor_col(amount):
     if cursor[1] + amount < 0:
         return
 
-    else:
-        if amount == 1:
-            if cursor[1] + 1 > len(rows[cursor[0]]):
-                cursor = (cursor[0] + 1, 0)
+    if cursor[1] + amount > len(rows[cursor[0]]):
+        cursor = (cursor[0] + amount, 0)
     
-                return update_cursor()
+        return update_cursor()
 
     cursor = (cursor[0], cursor[1] + amount)
     update_cursor()
