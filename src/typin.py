@@ -1,3 +1,5 @@
+""" Cursor movement """
+
 from cursor import Cursor
 
 class Typing:
