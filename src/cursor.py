@@ -1,60 +1,70 @@
 import os
 
-def update_cursor(cursor: tuple, rows: list, text: str) -> None:
-    os.system('clear')
-    text_index = 0
+class Cursor:
+    def __init__(self, text) -> None:
+        self.text = text
+        self.cursor = (0, 0)
 
-    try:
-        for i in range(cursor[0]):
-            text_index += len(rows[i]) + 1
+        self.rows = self.text.split('\n')
 
-        text_index += cursor[1]
+    def update_cursor(self, message = None):
+        os.system('clear')
 
-        char_arr = [char for char in text]
+        text_index = self.get_cursor_position()
+        char_arr = [char for char in self.text]
+
+        if text_index >= len(char_arr)-1:
+            return
+
+        if char_arr[text_index] == '\n':
+            char_arr.insert(text_index, "\u258e")
+
         char_arr[text_index] = "\033[47m" + char_arr[text_index] + "\033[0m"
+        rows = ''.join(char_arr).split('\n')
 
-        print(''.join(char_arr))
-        print(cursor)
-    except:
-        pass
+        for row in rows:
+            print(f'\033[36m~\033[0m  {row}')
 
-def move_cursor_row(amount):
-    global cursor
+        print(message) if message else 0
 
-    if cursor[0] + amount < 0:
-        return
+    def move_cursor_row(self, amount):
+        if self.cursor[0] + amount < 0:
+            return
+            
+        try:
+            if self.cursor[1] > len(self.rows[self.cursor[0] + amount]):
+                self.cursor = (self.cursor[0] + amount, 0)
+                return self.update_cursor()
+
+            elif not self.rows[self.cursor[0]+amount].strip():
+                self.cursor = (self.cursor[0] + amount, 0)
+                return self.update_cursor()
+
+        except IndexError:
+            return
+
+        self.cursor = (self.cursor[0] + amount, self.cursor[1])
+        return self.update_cursor()
+
+    def move_cursor_col(self, amount):
+        if self.cursor[1] + amount < 0:
+            return
+
+        if self.cursor[1] + amount > len(self.rows[self.cursor[0]]):
+            self.cursor = (self.cursor[0] + amount, 0)
         
-    try:
-        if amount == -1:
-            if cursor[1] > len(rows[cursor[0] - 1]):
-                cursor = (cursor[0] - 1 if cursor[0] - 1 >= 0 else 0, 0)
-                return update_cursor()
+            return self.update_cursor()
 
-            elif not rows[cursor[0]-1].strip():
-                cursor = (cursor[0] - 1, 0)
-                return update_cursor()
-
-        if amount == 1:
-            if cursor[1] > len(rows[cursor[0] + 1]):
-                cursor = (cursor[0] + 1, 0)
-                return update_cursor()
-
-            elif not rows[cursor[0]+1].strip():
-                cursor = (cursor[0] + 1, 0)
-                return update_cursor()
-
-    except IndexError:
-        return
-
-    cursor = (cursor[0] + amount, cursor[1])
-    return update_cursor()
+        self.cursor = (self.cursor[0], self.cursor[1] + amount)
+        return self.update_cursor()
 
 
-def move_cursor_col(amount: int, cursor: tuple):
-    global cursor
+    def get_cursor_position(self):
+        text_index = 0
 
-    if cursor[1] + amount < 0:
-        return
-        
-    cursor = (cursor[0], cursor[1] + amount)
-    update_cursor()
+        for row in range(self.cursor[0]):
+            text_index += len(self.rows[row]) + 1
+
+        text_index += self.cursor[1]
+
+        return text_index
