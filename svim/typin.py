@@ -1,6 +1,6 @@
-""" Cursor movement """
+""" Handles everything related to typing and other key actions """
 
-from cursor import Cursor
+from .cursor import Cursor
 
 class Typing:
     def __init__(self, cursor: Cursor):

@@ -1,4 +1,4 @@
-import os
+""" Handles everything related to cursor actions or cursor movements """
 
 class Cursor:
     def __init__(self, text) -> None:
@@ -8,7 +8,7 @@ class Cursor:
         self.rows = self.text.split('\n')
 
     def update_cursor(self, message = None):
-        os.system('clear')
+        print('\033c', end='', flush=True)
 
         text_index = self.get_cursor_position()
         char_arr = [char for char in self.text]
@@ -23,7 +23,7 @@ class Cursor:
         rows = ''.join(char_arr).split('\n')
 
         for row in rows:
-            print(f'\033[36m~\033[0m  {row}')
+            print(f'\r\033[36m~\033[0m  {row}')
 
         print(message) if message else 0
 
