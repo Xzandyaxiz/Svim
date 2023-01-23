@@ -25,6 +25,7 @@ class Cursor:
         for row in rows:
             print(f'\r\033[36m~\033[0m  {row}')
 
+        print(self.cursor)
         print(message) if message else 0
 
     def move_cursor_row(self, amount):
@@ -68,3 +69,5 @@ class Cursor:
         text_index += self.cursor[1]
 
         return text_index
+
+    

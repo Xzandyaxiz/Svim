@@ -4,7 +4,7 @@ from svim import Cursor
 from svim import Typing
 from svim import Input
 
-import sys
+import sys, os
 
 text = ""
 
@@ -13,6 +13,8 @@ if len(sys.argv) > 0:
         text = fp.read()
 
 def run(cursor: Cursor):
+    sys.stdout.write("\033[?25l")
+
     typing = Typing(cursor)
 
     while True:
@@ -31,6 +33,8 @@ def run(cursor: Cursor):
             handle_arrow_keys(key, cursor)
         elif key == '\x7f':
             typing.backspace()
+        elif key == '\r':
+            typing.insert_newline()
         elif key == chr(127):
             typing.delete_forward()
         else:
@@ -47,6 +51,7 @@ def handle_ctrl_x():
 def handle_ctrl_s(cursor):
     with open (sys.argv[1], 'w') as fp:
         fp.write(text)
+
     cursor.update_cursor(f"\n(Saved {sys.argv[1]})")
 
 def handle_arrow_keys(key, cursor):
