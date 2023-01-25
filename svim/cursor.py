@@ -6,9 +6,25 @@ class Cursor:
         self.cursor = (0, 0)
 
         self.rows = self.text.split('\n')
+        self.row_des = 0
+        self.shift_held = False
+        self.selection_start = None
+        self.selection_end = None
+        self.undo_array = []
 
-    def update_cursor(self, message = None):
+    def parse_previous_move(self):
+        cursor, text = self.undo_array[-1].split(';')
+
+        return (cursor, text)
+
+    def undo(self):
+        pass
+
+    def update_cursor(self, message = None, undo_string = None):
         print('\033c', end='', flush=True)
+
+        if undo_string:
+            self.undo_array.append(undo_string)
 
         text_index = self.get_cursor_position()
         char_arr = [char for char in self.text]
@@ -28,7 +44,7 @@ class Cursor:
         print(self.cursor)
         print(message) if message else 0
 
-    def move_cursor_row(self, amount):
+    def move_cursor_row(self, amount, undo_string):
         if self.cursor[0] + amount < 0:
             return
             
@@ -43,11 +59,18 @@ class Cursor:
 
         except IndexError:
             return
+        
+        if len(self.rows[self.cursor[0] + amount]) >= self.row_des:
+            self.cursor = (self.cursor[0], self.row_des)
+        
+        else:
+            self.cursor = (self.cursor[0], len(self.rows[self.cursor[0] + amount]) )
 
         self.cursor = (self.cursor[0] + amount, self.cursor[1])
-        return self.update_cursor()
 
-    def move_cursor_col(self, amount):
+        return self.update_cursor(undo_string=f"{str(self.cursor)};{self.text}")
+
+    def move_cursor_col(self, amount, undo_string):
         if self.cursor[1] + amount < 0:
             return
 
@@ -55,9 +78,13 @@ class Cursor:
             self.cursor = (self.cursor[0] + amount, 0)
         
             return self.update_cursor()
+        
+        if len(self.rows[self.cursor[0]]) >= self.row_des:
+            self.row_des += amount
 
         self.cursor = (self.cursor[0], self.cursor[1] + amount)
-        return self.update_cursor()
+
+        return self.update_cursor(undo_string=f"{str(self.cursor)};{self.text}")
 
 
     def get_cursor_position(self):

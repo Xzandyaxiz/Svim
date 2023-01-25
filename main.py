@@ -13,11 +13,10 @@ if len(sys.argv) > 0:
         text = fp.read()
 
 def run(cursor: Cursor):
-    sys.stdout.write("\033[?25l")
-
     typing = Typing(cursor)
 
     while True:
+        sys.stdout.write("\033[?25l")
         key = Input().getch()
 
         if key == 'q':
