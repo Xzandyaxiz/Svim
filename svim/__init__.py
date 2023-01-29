@@ -2,4 +2,3 @@
 
 from .cursor import Cursor
 from .typin import Typing
-from .input import Input
