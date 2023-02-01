@@ -1,6 +1,6 @@
 import sys, termios, tty
-from svim import Cursor
-from svim import Typing
+from svimsrc import Cursor
+from svimsrc import Typing
 
 with open (sys.argv[1], 'r') as fp:
     text = fp.read()
@@ -45,7 +45,7 @@ def run(cursor: Cursor):
             typing.add_letter(key)
 
 def flush():
-    print('\033c', end='', flush=True)
+    print('\033c', end='\r', flush=True)
 
 def handle_arrow_keys(key, cursor):
 
