@@ -7,7 +7,7 @@ Currently only supports systems based on gnu/linux.
 Clone the git repository and copy it to your `/usr/local/bin` directory
 
 ```bash
-sudo cp Svim/svim /usr/local/bin
+sudo cp Svim/svim /usr/local/bin/
 ```
 And then make it executable
 ```bash
