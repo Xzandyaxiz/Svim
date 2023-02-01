@@ -21,5 +21,5 @@ svim YOUR_FILE
 ```
 
 Shortcuts are:
-* ctrl+s for saving
+* ctrl+s for writing changes
 * q for exiting
