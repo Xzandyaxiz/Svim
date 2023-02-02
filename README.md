@@ -1,3 +1,5 @@
+![Logo](images/icon.png){ width="800" height="600" style="display: block; margin: 0 auto" }
+
 # Svim
 Svim (Super vim) is a terminal based text editor similar to vim.
 
