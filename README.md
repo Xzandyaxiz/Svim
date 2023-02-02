@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Xzandyaxiz/Svim/main/images/icon.png" alt="Logo">
+  <img src="https://raw.githubusercontent.com/Xzandyaxiz/Svim/main/images/icon.png" alt="Logo" width="200" height="200">
 </p>
 
 # Svim
