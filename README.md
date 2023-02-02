@@ -1,6 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/Xzandyaxiz/Svim/main/images/icon.png" alt="Logo">
 </p>
+
 # Svim
 Svim (Super vim) is a terminal based text editor similar to vim.
 
