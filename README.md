@@ -1,4 +1,6 @@
-![Logo](images/icon.png){ width="800" height="600" style="display: block; margin: 0 auto" }
+<p align="center">
+    <img src="images/icon.png">
+p>
 
 # Svim
 Svim (Super vim) is a terminal based text editor similar to vim.
