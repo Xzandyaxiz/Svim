@@ -1,0 +1,13 @@
+{
+    "FOREGROUND": "[39m",
+    "BACKGROUND": "[49m",
+
+    "HIGHLIGHTING": {
+        "py": {
+            "[35m": ["if", "and", "or", "def", "async", "import", "class", "return", "for", "in"]
+        },
+        "js": {
+
+        }
+    }
+}
