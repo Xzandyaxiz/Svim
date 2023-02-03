@@ -1,5 +1,5 @@
 from .config import CONFIG
-import sys
+import sys, shutil
 
 class Cursor:
     def __init__(self, text = None):
@@ -7,12 +7,22 @@ class Cursor:
         self.row_des = 0
         self.cursor = (0, 0)
 
-        self.config = CONFIG('config.json')
+        self.config = CONFIG('config.json').get_highlighting(sys.argv[1])
 
     def refresh(self):
         rows = self.text.split('\n')
+        visual_rows = []
 
-        current_row = rows[self.cursor[0]]
+        rows_num = shutil.get_terminal_size()[1]
+
+        if len(rows) > rows_num:
+            #if self.cursor[0] > len(rows) - 5:
+            #    pass
+            
+            for row in range(rows_num - 3):
+                visual_rows.append(rows[row])
+
+        current_row = visual_rows[self.cursor[0]]
         current_char = ''
 
         if len(current_row) > self.cursor[1]:
@@ -22,19 +32,18 @@ class Cursor:
             current_char = ' '
 
         cursor_char = f'\033[30;47m{current_char}\033[39;49m'
-        rows[self.cursor[0]] = current_row[:self.cursor[1]] + cursor_char + current_row[self.cursor[1]+1:] 
+        visual_rows[self.cursor[0]] = current_row[:self.cursor[1]] + cursor_char + current_row[self.cursor[1]+1:] 
 
         updated_screen = []
 
-        for row in rows:
+        for row in visual_rows:
             updated_screen.append(f'\033[36m~\033[39m {row} ')
 
-        screen = '\033c' + f'\033[30;47m' + ' ' * 30 + f'FILE: {sys.argv[1]}' + ' ' * 40 + '\033[39;49m\n' + '\n'.join(updated_screen) + f'\n{self.cursor}'
+        screen = '\033c' + f'\033[30;47m' + ' ' * 30 + f'FILE: {sys.argv[1]}' + ' ' * 40 + '\033[39;49m\n' + '\n'.join(updated_screen) + f'\n{self.cursor}\n'
 
-        extension = sys.argv[1].split('.')[1]
+        print('\033[?25l')
 
         print(screen, end='\r', flush=True)
-        print(self.config.get_highlighting(extension))
 
     def move_cursor_row(self, amount):
         rows = self.text.split('\n')
