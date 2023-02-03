@@ -22,6 +22,9 @@ class Cursor:
             for row in range(rows_num - 3):
                 visual_rows.append(rows[row])
 
+        else:
+            visual_rows = rows        
+
         current_row = visual_rows[self.cursor[0]]
         current_char = ''
 
